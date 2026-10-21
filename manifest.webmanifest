@@ -1,0 +1,19 @@
+{
+  "id": "./",
+  "name": "Ram Setu — A Ramayana Adventure",
+  "short_name": "Ram Setu",
+  "description": "Lead the vanara army and build the legendary Ram Setu bridge to Lanka. Story, endless mode, daily challenges and character cards.",
+  "lang": "en",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#140a22",
+  "theme_color": "#140a22",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

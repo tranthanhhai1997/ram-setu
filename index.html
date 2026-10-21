@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#140a22" />
+    <meta name="description" content="Ram Setu — build the legendary bridge from the Ramayana. Xây cầu Ram Setu theo sử thi Ramayana. राम सेतु बनाओ — रामायण से प्रेरित गेम।" />
+    <meta property="og:title" content="Ram Setu — A Ramayana Adventure" />
+    <meta property="og:description" content="Lead the vanara army and build the legendary bridge to Lanka!" />
+    <meta property="og:image" content="img/ui/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Ram Setu" />
+    <title>Ram Setu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- Thanh trên cùng -->
+      <header class="toolbar">
+        <div class="brand">
+          <span class="flag" aria-hidden="true">🌉</span>
+          <span data-i18n-html="brand_html">Xây Cầu <em>Ram Setu</em></span>
+        </div>
+        <span class="chip coin" id="coinChip" data-i18n-title="coin_t"><img class="ico" src="img/ui/icon-coin.webp" alt=""> <span id="coinCount">0</span></span>
+        <span class="chip" id="nextChip" data-i18n-title="next_t"><img class="ico" src="img/ui/icon-stone.webp" alt=""> <span id="nextLabel"></span></span>
+        <select class="lang-sel short tbtn" id="langTop" data-i18n-title="lang_t"></select>
+        <button class="tbtn install-btn" type="button" data-i18n="install" hidden>📲</button>
+        <button class="tbtn icon" id="dailyBtn" type="button" data-i18n-title="daily_t"><img class="ico lg" src="img/ui/icon-gift.webp" alt=""><i class="dot" id="dailyDot"></i></button>
+        <button class="tbtn icon" id="musicBtn" type="button" data-i18n-title="music_t">🎵</button>
+        <button class="tbtn icon" id="soundBtn" type="button" data-i18n-title="sound_t">🔊</button>
+        <button class="tbtn icon" id="helpBtn" type="button" data-i18n-title="help_t">?</button>
+        <button class="tbtn icon" id="settingsBtn" type="button" data-i18n-title="settings_t">⚙</button>
+        <button class="tbtn" id="menuBtn" type="button" data-i18n="menu">☰ Menu</button>
+      </header>
+
+      <!-- Dải đếm ngược phim -->
+      <div class="film-strip">
+        <span id="filmText"></span>
+        <button class="tbtn sm" id="filmShareBtn" type="button" data-i18n="share">📣</button>
+      </div>
+
+      <!-- Sân khấu game -->
+      <div class="stage in-menu" id="stage">
+        <canvas id="game" width="960" height="600" aria-label="Ram Setu"></canvas>
+
+        <div class="hud">
+          <div class="hudbox">
+            <span class="small" id="hudLevelName"></span>
+            <span id="hudLevelSub"></span>
+          </div>
+          <div class="spacer"></div>
+          <div class="hudbox windbox" id="windBox">
+            <span><span class="small" data-i18n="hud_wind">Gió</span><span id="windText"></span></span>
+            <span class="wind-arrow" id="windArrow">
+              <svg width="22" height="14" viewBox="0 0 24 16"><path d="M2 8h17M13 2l7 6-7 6" stroke="#ffd166" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="wind-bars" id="windBars"><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+          <div class="hudbox combo" id="comboBox" hidden>
+            <span class="small" data-i18n="hud_combo">Combo</span>
+            <span class="cv" id="comboText">×2 🔥</span>
+          </div>
+          <div class="hudbox stones">
+            <span class="small" data-i18n="hud_stones">Đá còn</span>
+            <span><img class="ico" src="img/ui/icon-stone.webp" alt=""> <span id="hudStones">0</span></span>
+          </div>
+          <button class="hudbox hudbtn" id="pauseBtn" type="button" data-i18n-title="pause_t">❚❚</button>
+        </div>
+        <div class="power-bar" id="powerBar"></div>
+        <div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+
+        <!-- Menu chính -->
+        <div class="overlay menu" id="menuOverlay">
+          <div class="menu-fx" id="menuFx" aria-hidden="true"></div>
+          <div class="card wide">
+            <div class="hero">
+              <img class="hero-emblem" src="img/ui/emblem.webp" alt="">
+              <div class="hero-kicker" data-i18n="kicker"></div>
+              <h1 class="logo" data-i18n="logo">Ram Setu</h1>
+              <p class="hero-sub" data-i18n="hero_sub"></p>
+              <div class="hero-film" id="heroFilm"></div>
+            </div>
+            <nav class="tabs" role="tablist">
+              <button class="tab" data-tab="story" type="button" data-i18n="tab_story"></button>
+              <button class="tab" data-tab="modes" type="button" data-i18n="tab_modes"></button>
+              <button class="tab" data-tab="shop" type="button" data-i18n="tab_shop"></button>
+              <button class="tab" data-tab="cards" type="button" data-i18n="tab_cards"></button>
+              <button class="tab" data-tab="ach" type="button" data-i18n="tab_ach"></button>
+            </nav>
+            <div class="tab-body" id="tabBody"></div>
+          </div>
+        </div>
+
+        <!-- Hội thoại -->
+        <div class="overlay story" id="storyOverlay" hidden>
+          <div class="story-box" id="storyBox">
+            <div class="portrait" id="storyPortrait"></div>
+            <div class="story-main">
+              <div class="story-name"><b id="storyName"></b><small id="storyStep"></small></div>
+              <p id="storyText"></p>
+              <div class="story-actions">
+                <button class="btn ghost sm" id="storySkip" type="button" data-i18n="skip"></button>
+                <button class="btn sm" id="storyNext" type="button"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thắng -->
+        <div class="overlay" id="winOverlay" hidden>
+          <div class="card">
+            <h3 id="winTitle"></h3>
+            <div class="stars" id="winStars"><span class="st">★</span><span class="st">★</span><span class="st">★</span></div>
+            <p id="winText"></p>
+            <div id="winExtra"></div>
+            <div class="btn-row">
+              <button class="btn ghost" id="winMenuBtn" type="button" aria-label="Menu">☰</button>
+              <button class="btn ghost" id="winReplayBtn" type="button" data-i18n="replay"></button>
+              <button class="btn" id="winNextBtn" type="button"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thua -->
+        <div class="overlay" id="failOverlay" hidden>
+          <div class="card">
+            <h3 id="failTitle"></h3>
+            <p id="failText"></p>
+            <div class="btn-row col">
+              <button class="btn teal" id="failRewardBtn" type="button" data-i18n="fail_ad"></button>
+              <button class="btn" id="failBagBtn" type="button" data-i18n="fail_bag"></button>
+              <button class="btn ghost" id="failShareBtn" type="button" data-i18n="fail_share"></button>
+              <div class="btn-row">
+                <button class="btn ghost" id="failMenuBtn" type="button" data-i18n="menu_btn"></button>
+                <button class="btn ghost" id="failRetryBtn" type="button" data-i18n="replay"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tạm dừng -->
+        <div class="overlay" id="pauseOverlay" hidden>
+          <div class="card narrow">
+            <h3 data-i18n="pause_title"></h3>
+            <div class="btn-row col">
+              <button class="btn" id="pauseResumeBtn" type="button" data-i18n="resume"></button>
+              <button class="btn ghost" id="pauseRestartBtn" type="button" data-i18n="restart_level"></button>
+              <button class="btn ghost" data-toggle="music" type="button"></button>
+              <button class="btn ghost" data-toggle="sound" type="button"></button>
+              <button class="btn ghost" data-toggle="haptic" type="button"></button>
+              <button class="btn ghost" id="pauseHelpBtn" type="button" data-i18n="help_btn"></button>
+              <button class="btn ghost" id="pauseMenuBtn" type="button" data-i18n="back_menu"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quà hằng ngày -->
+        <div class="overlay" id="dailyOverlay" hidden>
+          <div class="card">
+            <h3 data-i18n="daily_title"></h3>
+            <p id="dailyStreak"></p>
+            <div class="daily-grid" id="dailyGrid"></div>
+            <p class="mini" data-i18n="daily_note"></p>
+            <div class="btn-row">
+              <button class="btn ghost" id="dailyCloseBtn" type="button" data-i18n="later"></button>
+              <button class="btn" id="dailyClaimBtn" type="button"></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quảng cáo (mô phỏng) -->
+        <div class="overlay" id="adOverlay" hidden>
+          <div class="card">
+            <span class="ad-tag" data-i18n="ad_tag"></span>
+            <div class="ad-creative">
+              <div class="ad-brand" data-i18n="ad_brand"></div>
+              <div class="headline" data-i18n="ad_head"></div>
+              <p class="desc" data-i18n="ad_desc"></p>
+            </div>
+            <div class="ad-progress"><i id="adProgressBar"></i></div>
+            <div class="ad-count" id="adCountText"></div>
+            <div class="btn-row"><button class="btn" id="adCloseBtn" type="button" disabled></button></div>
+          </div>
+        </div>
+
+        <!-- Lớp phủ trên cùng: hướng dẫn, thẻ, cài đặt -->
+        <div class="overlay top" id="helpOverlay" hidden>
+          <div class="card" style="text-align:left">
+            <h3 style="text-align:center" data-i18n="help_title"></h3>
+            <div data-i18n-html="help_html"></div>
+            <div data-i18n-html="help_demon"></div>
+            <div class="btn-row"><button class="btn" id="helpCloseBtn" type="button" data-i18n="got_it"></button></div>
+          </div>
+        </div>
+        <div class="overlay top" id="cardOverlay" hidden>
+          <div class="card narrow char-card">
+            <div id="cardBody"></div>
+            <div class="btn-row"><button class="btn" id="cardCloseBtn" type="button" data-i18n="close"></button></div>
+          </div>
+        </div>
+        <div class="overlay top" id="settingsOverlay" hidden>
+          <div class="card narrow">
+            <h3 data-i18n="settings_title"></h3>
+            <div class="btn-row col">
+              <label class="lang-row"><span data-i18n="lang_t"></span><select class="lang-sel" id="langSettings"></select></label>
+              <button class="btn ghost" data-toggle="music" type="button"></button>
+              <button class="btn ghost" data-toggle="sound" type="button"></button>
+              <button class="btn ghost" data-toggle="haptic" type="button"></button>
+              <button class="btn teal install-btn" type="button" data-i18n="install" hidden></button>
+              <button class="btn ghost danger" id="resetBtn" type="button" data-i18n="reset"></button>
+              <button class="btn" id="settingsCloseBtn" type="button" data-i18n="done"></button>
+            </div>
+            <p class="mini" id="iosHint" data-i18n="ios_install" hidden></p>
+            <p class="mini" data-i18n="saved_note"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banner quảng cáo -->
+      <div class="banner-slot" role="complementary">
+        <span class="ad-tag" data-i18n="banner_tag"></span>
+        <span data-i18n="banner"></span>
+      </div>
+
+      <!-- Thông tin -->
+      <div class="cols">
+        <section class="panel" data-i18n-html="panel1_html"></section>
+        <section class="panel" data-i18n-html="panel2_html"></section>
+        <section class="panel film" data-i18n-html="panel3_html"></section>
+      </div>
+
+      <footer data-i18n="footer"></footer>
+    </div>
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+    <div class="wipe" id="wipe" hidden><span id="wipeText"></span></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/save.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+  </body>
+</html>

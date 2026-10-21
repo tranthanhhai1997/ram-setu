@@ -1,0 +1,6 @@
+# Cấu hình máy cục bộ
+.claude/
+# Ảnh gốc độ phân giải cao (game chỉ dùng bản .webp đã nén)
+img/_raw/
+img/throwing_sprites/
+img/**/*.png
