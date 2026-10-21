@@ -13,7 +13,7 @@ const FILM = {
   releaseDate: "2026-11-08T00:00:00+07:00",
   tagline: "Sử thi vĩ đại nhất sắp lên màn ảnh rộng",
   hashtag: "#RamSetuChallenge",
-  shareUrl: "" // điền URL game khi phát hành; để trống sẽ dùng URL trang hiện tại
+  shareUrl: "https://tranthanhhai1997.github.io/ram-setu/" // URL game đã phát hành (GitHub Pages)
 };
 
 /* ---------- Nhân vật & thẻ sưu tập ---------- */
