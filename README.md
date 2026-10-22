@@ -1,6 +1,19 @@
 # Xây Cầu Ram Setu
 
-Game trình duyệt ném đá xây cầu theo sử thi Ramayana. Không cần build — chạy bằng server tĩnh bất kỳ.
+### ▶ [Chơi ngay: tranthanhhai1997.github.io/ram-setu](https://tranthanhhai1997.github.io/ram-setu/)
+
+[![Ram Setu — chơi ngay](img/ui/og-image.jpg)](https://tranthanhhai1997.github.io/ram-setu/)
+
+Game trình duyệt ném đá xây cầu theo sử thi Ramayana — chạy trên máy tính và điện thoại, cài được như ứng dụng (PWA), chơi offline, hỗ trợ Tiếng Việt / English / हिन्दी.
+
+- **12 màn cốt truyện** qua 3 chương, hội thoại cùng Rama, Hanuman, Nala, Ravana…
+- **Quỷ Rakshasa canh cầu**, thủy quái Makara, cầu lửa, gió giật, chim mòng biển
+- **Biển vô tận**, **Thử thách ngày**, 13 thẻ nhân vật, 16 thành tựu, cửa hàng trang phục
+- **Điều khiển:** kéo về sau như ná cao su rồi thả · bàn phím: giữ `Space` nạp lực, `1`–`4` vật phẩm, `P` tạm dừng
+
+## Chạy trên máy
+
+Không cần build — chạy bằng server tĩnh bất kỳ:
 
 ```bash
 python3 -m http.server 8765
@@ -25,7 +38,7 @@ Mở `http://localhost:8765/`. File gốc được giữ nguyên: `Game Xây C�
 ## Cần làm trước khi phát hành
 
 - `FILM.releaseDate` trong `js/data.js` đang là **giá trị giả định** — cập nhật theo ngày công chiếu chính thức tại thị trường mục tiêu.
-- `FILM.shareUrl`: điền URL chính thức của game.
+- `FILM.shareUrl`: đã đặt là `https://tranthanhhai1997.github.io/ram-setu/` (đổi nếu chuyển tên miền).
 - Quảng cáo đang là **mô phỏng**: banner (`.banner-slot`), interstitial (sau mỗi 2 màn thắng, `winNext` trong `ui.js`), rewarded (`openAd("rewarded", …)`). Thay bằng SDK thật tại các vị trí này.
 - Không dùng logo, hình ảnh, tên diễn viên hay nhạc phim khi chưa có thỏa thuận bản quyền với hãng phim.
 
@@ -47,4 +60,4 @@ Mở `http://localhost:8765/`. File gốc được giữ nguyên: `Game Xây C�
 Khai báo trong `ART` (cuối `js/data.js`) — không cần sửa code:
 - `ART.portraits.<id>`: chân dung cho hội thoại & thẻ (512×512 WebP).
 - `ART.monkey.<skinId>`: sprite nhân vật ném đá (`src, w, h, ax, ay`).
-- Ảnh minh họa: `img/portraits/` (14 chân dung), `img/sprites/` (5 trang phục × 3 tư thế), `img/bg/` (7 bầu trời, 3 bờ biển), `img/ui/` (ảnh chủ đạo, huy hiệu, khung, 10 biểu tượng, Makara/cầu lửa/chim). Tất cả khai báo trong `ART` (`js/data.js`). PNG gốc ở `img/_raw/` — **không đưa lên máy chủ**. Ảnh gốc độ phân giải cao đã được xóa; nếu cần xuất lại cỡ lớn hơn phải tạo lại ảnh.
+- Ảnh minh họa: `img/portraits/` (14 chân dung), `img/sprites/` (5 trang phục × 3 tư thế), `img/bg/` (7 bầu trời, 3 bờ biển), `img/ui/` (ảnh chủ đạo, huy hiệu, khung, 10 biểu tượng, Makara/cầu lửa/chim). Tất cả khai báo trong `ART` (`js/data.js`). Ảnh PNG gốc không đưa vào repo (`.gitignore`); muốn xuất cỡ lớn hơn phải tạo lại ảnh.
