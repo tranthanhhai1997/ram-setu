@@ -61,3 +61,12 @@ Khai báo trong `ART` (cuối `js/data.js`) — không cần sửa code:
 - `ART.portraits.<id>`: chân dung cho hội thoại & thẻ (512×512 WebP).
 - `ART.monkey.<skinId>`: sprite nhân vật ném đá (`src, w, h, ax, ay`).
 - Ảnh minh họa: `img/portraits/` (14 chân dung), `img/sprites/` (5 trang phục × 3 tư thế), `img/bg/` (7 bầu trời, 3 bờ biển), `img/ui/` (ảnh chủ đạo, huy hiệu, khung, 10 biểu tượng, Makara/cầu lửa/chim). Tất cả khai báo trong `ART` (`js/data.js`). Ảnh PNG gốc không đưa vào repo (`.gitignore`); muốn xuất cỡ lớn hơn phải tạo lại ảnh.
+
+## Bộ ba game Ramayana
+
+| Game | Mô tả | Link |
+|---|---|---|
+| 🏹 **Kodanda** | Rama bắn cung diệt quỷ | [tranthanhhai1997/kodanda](https://github.com/tranthanhhai1997/kodanda) |
+| 🌊 **Ram Setu** | Ném đá xây cầu vượt biển *(game này)* | [tranthanhhai1997/ram-setu](https://github.com/tranthanhhai1997/ram-setu) |
+| 🐒 **Hanuman Bay Qua Biển** | Hanuman vượt đại dương | [tranthanhhai1997/hanuman-bay-qua-bien](https://github.com/tranthanhhai1997/hanuman-bay-qua-bien) |
+
