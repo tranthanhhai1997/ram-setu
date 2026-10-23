@@ -982,7 +982,8 @@ function landStone(i) {
   }
   flying = null;
   updateHUD();
-  if (slots.every(x => x.done)) { startWin(); return; }
+  // xây xong mà còn quỷ chờ (ném vượt lên trước) → quỷ vẫn xuất trận, hạ hết mới thắng
+  if (slots.every(x => x.done) && !demon && !demonQueue.length) { startWin(); return; }
   afterThrow();
 }
 function sinkStone() {
@@ -1019,8 +1020,7 @@ function startWin() {
 }
 /* ================= Quỷ Rakshasa canh cầu ================= */
 function spawnDemon() {
-  const q = demonQueue.shift(), c = contiguous();
-  if (c >= slots.length) return;
+  const q = demonQueue.shift(), c = Math.min(contiguous(), slots.length - 1);
   const sc = q.boss ? 1.7 : 1.2;
   // luôn cách khỉ ≥ 100px; hết chỗ ngang (ô cuối) thì bay lên xuống trên trời Lanka
   const mx = monkeyPos().x;
@@ -1084,6 +1084,7 @@ function hitDemon(f) {
     SAVE.stats.demons = (SAVE.stats.demons || 0) + 1;
     sfx.demonDown(); shake(6); buzz([40, 60, 80]); hopT = 0.45;
     demon = null;
+    if (slots.every(x => x.done) && !demonQueue.length) { updateHUD(); startWin(); return; }
   }
   updateHUD(); afterThrow();
 }
@@ -1338,9 +1339,15 @@ function step(dt) {
 }
 let lastTs = 0;
 function loop(ts) {
+  requestAnimationFrame(loop); // đặt khung kế trước: lỗi trong step() không làm đứng cả game
+  if (document.hidden) return;
+  // tiết kiệm pin/nhiệt: màn 90–120Hz vẫn chỉ vẽ ~60 khung/giây;
+  // menu / tạm dừng / quảng cáo / bảng kết quả che cảnh phía sau → chỉ vẽ ~4 khung/giây
+  const idle = state === "menu" || state === "pause" || state === "ad" ||
+    ((state === "win" || state === "fail") && winTimer <= 0 && failTimer <= 0);
+  if (ts - lastTs < (idle ? 250 : 15)) return;
   const dt = clamp((ts - lastTs) / 1000, 0, 0.033);
   lastTs = ts;
-  requestAnimationFrame(loop); // đặt khung kế trước: lỗi trong step() không làm đứng cả game
   try { step(state === "pause" ? 0 : dt); } catch (e) { console.error(e); }
 }
 

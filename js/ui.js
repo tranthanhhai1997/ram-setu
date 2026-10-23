@@ -172,6 +172,18 @@ const UI = (() => {
     share(t("share_progress", { a: Math.min(SAVE.unlocked - 1, LEVELS.length), s: starsTotal(), c: SAVE.cards.length }));
   }
 
+  /* ---------- Tiết kiệm pin: hoạt ảnh trang trí lặp vô hạn ----------
+     Chỉ một hoạt ảnh CSS chạy mãi cũng buộc WebView dựng lại cả màn hình 60 lần/giây
+     (đo trên Android: menu ~100% CPU một nhân → ~15% khi dừng). Cho chạy vài giây
+     sau mỗi lần chạm rồi tạm dừng. */
+  let decorT = null;
+  function decorLoops() { return document.getAnimations ? document.getAnimations().filter(a => a.effect && a.effect.getTiming().iterations === Infinity) : []; }
+  function wakeDecor() {
+    decorLoops().forEach(a => { if (a.playState === "paused") a.play(); });
+    clearTimeout(decorT);
+    decorT = setTimeout(() => decorLoops().forEach(a => a.pause()), 6000);
+  }
+
   /* ---------- Menu chính ---------- */
   function showMenu(tab) {
     hideAll(); state = "menu"; setInGame(false);
@@ -179,6 +191,7 @@ const UI = (() => {
     renderTab(); renderFilm(); refreshCoins();
     show("#menuOverlay");
     $("#dailyDot").hidden = SAVE.daily.lastClaim === todayStr();
+    wakeDecor();
   }
   function heroPlayLabel() {
     const next = Math.min(SAVE.unlocked - 1, LEVELS.length - 1);
@@ -751,6 +764,8 @@ const UI = (() => {
     });
     // nhạc nền cần thao tác người dùng đầu tiên để khởi động
     document.addEventListener("pointerdown", function once() { ac(); music.sync(); document.removeEventListener("pointerdown", once); });
+    document.addEventListener("pointerdown", wakeDecor, { passive: true });
+    document.addEventListener("keydown", wakeDecor);
 
     syncToggles(); renderFilm();
     startLevel(LEVELS[Math.min(SAVE.unlocked - 1, LEVELS.length - 1)]);
