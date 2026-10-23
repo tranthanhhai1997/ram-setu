@@ -291,6 +291,9 @@ function drawSky(th) {
   }
 }
 function drawRavana(th, px, py) {
+  // gọi từ bờ vẽ tay (ảnh bờ chưa tải xong) thì không có toạ độ → đặt trên đỉnh cung điện
+  if (px == null) px = X1 + 76;
+  if (py == null) py = WATER_Y - 168;
   if (RAVANA_IMG.complete && RAVANA_IMG.naturalWidth) {
     // chân dung Ravana hiện mờ ảo trên trời Lanka, hào quang đỏ nhấp nháy
     const cx = px, cy = py - 70 + Math.sin(time * 1.1) * 4, sz = 132;
@@ -1337,8 +1340,8 @@ let lastTs = 0;
 function loop(ts) {
   const dt = clamp((ts - lastTs) / 1000, 0, 0.033);
   lastTs = ts;
-  step(state === "pause" ? 0 : dt);
-  requestAnimationFrame(loop);
+  requestAnimationFrame(loop); // đặt khung kế trước: lỗi trong step() không làm đứng cả game
+  try { step(state === "pause" ? 0 : dt); } catch (e) { console.error(e); }
 }
 
 /* ================= Điều khiển ================= */
