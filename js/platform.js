@@ -37,7 +37,7 @@ const Native = {
    - Web / chưa tải xong quảng cáo: Ads.ready() = false → UI dùng bản mô phỏng
    ===================================================================== */
 const AD_CONFIG = {
-  testing: true,
+  testing: false,
   interstitial: "ca-app-pub-6386233826905968/6992996679",
   rewarded: "ca-app-pub-6386233826905968/1280882879"
 };

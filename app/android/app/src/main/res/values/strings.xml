@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Ram Setu</string>
-    <string name="title_activity_main">Ram Setu</string>
+    <string name="app_name">Ram Setu: Bridge Builder</string>
+    <string name="title_activity_main">Ram Setu: Bridge Builder</string>
     <string name="package_name">io.github.tranthanhhai1997.ramsetu</string>
     <string name="custom_url_scheme">io.github.tranthanhhai1997.ramsetu</string>
     <!-- AdMob App ID của Ram Setu -->

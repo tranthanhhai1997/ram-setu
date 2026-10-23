@@ -38,7 +38,7 @@ Mở `http://localhost:8765/`. File gốc được giữ nguyên: `Game Xây C�
 ## Cần làm trước khi phát hành
 
 - `FILM.releaseDate` trong `js/data.js` đang là **giá trị giả định** — cập nhật theo ngày công chiếu chính thức tại thị trường mục tiêu.
-- `FILM.shareUrl`: đã đặt là `https://tranthanhhai1997.github.io/ram-setu/` (đổi nếu chuyển tên miền).
+- `FILM.shareUrl`: link tải app trên Google Play (`https://play.google.com/store/apps/details?id=io.github.tranthanhhai1997.ramsetu`).
 - Quảng cáo đang là **mô phỏng**: banner (`.banner-slot`), interstitial (sau mỗi 2 màn thắng, `winNext` trong `ui.js`), rewarded (`openAd("rewarded", …)`). Thay bằng SDK thật tại các vị trí này.
 - Không dùng logo, hình ảnh, tên diễn viên hay nhạc phim khi chưa có thỏa thuận bản quyền với hãng phim.
 

@@ -1,6 +1,6 @@
 /* Service worker — cho phép cài đặt và chơi offline.
    Tăng VERSION mỗi lần phát hành để người chơi nhận bản mới. */
-const VERSION = "ramsetu-v16";
+const VERSION = "ramsetu-v17";
 const SHELL = [
   "./", "index.html", "manifest.webmanifest", "css/style.css", "css/fonts.css",
   "fonts/BeVietnamPro-400-latin-ext.woff2", "fonts/BeVietnamPro-400-latin.woff2", "fonts/BeVietnamPro-400-vietnamese.woff2", "fonts/BeVietnamPro-500-latin-ext.woff2", "fonts/BeVietnamPro-500-latin.woff2", "fonts/BeVietnamPro-500-vietnamese.woff2", "fonts/BeVietnamPro-600-latin-ext.woff2", "fonts/BeVietnamPro-600-latin.woff2", "fonts/BeVietnamPro-600-vietnamese.woff2", "fonts/BeVietnamPro-700-latin-ext.woff2", "fonts/BeVietnamPro-700-latin.woff2", "fonts/BeVietnamPro-700-vietnamese.woff2", "fonts/BeVietnamPro-800-latin-ext.woff2", "fonts/BeVietnamPro-800-latin.woff2", "fonts/BeVietnamPro-800-vietnamese.woff2", "fonts/NotoSansDevanagari-400-devanagari.woff2", "fonts/NotoSansDevanagari-400-latin-ext.woff2", "fonts/NotoSansDevanagari-400-latin.woff2", "fonts/PlayfairDisplay-700-latin-ext.woff2", "fonts/PlayfairDisplay-700-latin.woff2", "fonts/PlayfairDisplay-700-vietnamese.woff2",

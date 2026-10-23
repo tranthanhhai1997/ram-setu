@@ -51,8 +51,7 @@ const STR = {
     panel2_html: `<h2>🎮 Có gì trong game</h2><ul><li><b>12 màn cốt truyện</b> qua 3 chương, có hội thoại cùng Rama, Hanuman, Nala, Ravana…</li><li><b>Biển vô tận</b> và <b>Thử thách ngày</b> để so kỷ lục với bạn bè.</li><li><b>13 thẻ nhân vật</b> kể truyền thuyết Ramayana — sưu tầm đủ bộ!</li><li><b>Cửa hàng</b>: trang phục Hanuman, Sugriva, Angada… và đá cẩm thạch, ngọc lam.</li><li><b>15 thành tựu</b> và <b>quà đăng nhập 7 ngày</b>.</li></ul>`,
     panel3_html: `<h2>🎬 Ramayana trên màn ảnh rộng</h2><p>Sử thi về Rama, Sita và Hanuman sắp được kể lại trên màn ảnh rộng. Hoàn thành cây cầu trong game trước ngày công chiếu và chia sẻ thành tích của bạn với <b>#RamSetuChallenge</b>!</p>`,
     footer: "Game \"Xây Cầu Ram Setu\" — lấy cảm hứng từ sử thi Ramayana. Hỗ trợ chuột, cảm ứng, bàn phím và chơi offline.",
-    film_soon: "🎬 <b>{t}</b> — sắp ra mắt", film_days: "🎬 <b>{t}</b> lên màn ảnh rộng — còn <b class='big'>{d}</b> ngày",
-    film_now: "🎬 <b>{t}</b> đang công chiếu — ra rạp ngay!", film_tag: "🎬 <b>{t}</b> — sử thi vĩ đại nhất trên màn ảnh rộng",
+    film_tag: "🎬 <b>{t}</b> — sử thi vĩ đại nhất trên màn ảnh rộng",
     share_title: "Xây Cầu Ram Setu", share_copied: "Đã sao chép nội dung chia sẻ", share_copied_sub: "Dán vào mạng xã hội để thách đấu bạn bè!",
     share_progress: "Tôi đã xây {a}/12 đoạn cầu Ram Setu với {s}⭐ và {c} thẻ nhân vật Ramayana. Bạn dám thử không?",
     share_endless: "Tôi đã vượt {n} chặng trên Biển vô tận trong game Xây Cầu Ram Setu! Ai phá được kỷ lục này?",
@@ -135,8 +134,7 @@ const STR = {
     panel2_html: `<h2>🎮 What's inside</h2><ul><li><b>12 story levels</b> across 3 chapters, with dialogue featuring Rama, Hanuman, Nala, Ravana…</li><li><b>Endless Sea</b> and <b>Daily Challenge</b> to compete with friends.</li><li><b>13 character cards</b> telling Ramayana legends — collect them all!</li><li><b>Shop</b>: Hanuman, Sugriva and Angada outfits… plus marble and jade stones.</li><li><b>15 achievements</b> and a <b>7-day login reward</b>.</li></ul>`,
     panel3_html: `<h2>🎬 Ramayana on the big screen</h2><p>The epic of Rama, Sita and Hanuman is coming to the big screen. Finish the bridge before release day and share your progress with <b>#RamSetuChallenge</b>!</p>`,
     footer: "\"Ram Setu Bridge Builder\" — inspired by the Ramayana. Mouse, touch, keyboard and offline play supported.",
-    film_soon: "🎬 <b>{t}</b> — coming soon", film_days: "🎬 <b>{t}</b> hits the big screen in <b class='big'>{d}</b> days",
-    film_now: "🎬 <b>{t}</b> is now in cinemas!", film_tag: "🎬 <b>{t}</b> — the greatest epic on the big screen",
+    film_tag: "🎬 <b>{t}</b> — the greatest epic on the big screen",
     share_title: "Ram Setu Bridge Builder", share_copied: "Share text copied", share_copied_sub: "Paste it on social media to challenge your friends!",
     share_progress: "I've built {a}/12 sections of the Ram Setu with {s}⭐ and {c} Ramayana character cards. Can you beat me?",
     share_endless: "I crossed {n} stages of the Endless Sea in Ram Setu Bridge Builder! Who can beat my record?",
@@ -219,8 +217,7 @@ const STR = {
     panel2_html: `<h2>🎮 गेम में क्या है</h2><ul><li>3 अध्यायों में <b>12 कथा स्तर</b>, राम, हनुमान, नल, रावण… के संवादों के साथ।</li><li>दोस्तों से मुक़ाबले के लिए <b>अनंत सागर</b> और <b>दैनिक चुनौती</b>।</li><li>रामायण की कथाएँ सुनाते <b>13 चरित्र कार्ड</b> — सभी इकट्ठा करें!</li><li><b>दुकान</b>: हनुमान, सुग्रीव, अंगद की वेशभूषा… और संगमरमर, हरितमणि पत्थर।</li><li><b>15 उपलब्धियाँ</b> और <b>7 दिन का लॉगिन इनाम</b>।</li></ul>`,
     panel3_html: `<h2>🎬 बड़े पर्दे पर रामायण</h2><p>राम, सीता और हनुमान की महागाथा जल्द ही बड़े पर्दे पर आ रही है। रिलीज़ से पहले गेम में सेतु पूरा करें और <b>#RamSetuChallenge</b> के साथ अपनी उपलब्धि शेयर करें!</p>`,
     footer: "\"राम सेतु निर्माण\" — रामायण से प्रेरित। माउस, टच, कीबोर्ड और ऑफ़लाइन खेल समर्थित।",
-    film_soon: "🎬 <b>{t}</b> — जल्द आ रही है", film_days: "🎬 <b>{t}</b> बड़े पर्दे पर — बस <b class='big'>{d}</b> दिन बाकी",
-    film_now: "🎬 <b>{t}</b> अब सिनेमाघरों में!", film_tag: "🎬 <b>{t}</b> — बड़े पर्दे पर महागाथा",
+    film_tag: "🎬 <b>{t}</b> — बड़े पर्दे पर महागाथा",
     share_title: "राम सेतु निर्माण", share_copied: "शेयर संदेश कॉपी हो गया", share_copied_sub: "दोस्तों को चुनौती देने के लिए सोशल मीडिया पर पेस्ट करें!",
     share_progress: "मैंने {s}⭐ और {c} रामायण चरित्र कार्ड के साथ राम सेतु के {a}/12 खंड बना लिए। क्या आप मुझसे आगे निकल सकते हैं?",
     share_endless: "मैंने राम सेतु निर्माण गेम में अनंत सागर के {n} चरण पार किए! कौन तोड़ेगा मेरा रिकॉर्ड?",
@@ -409,13 +406,10 @@ const CONTENT = {
 };
 
 /* ---------- Chọn & tra cứu ngôn ngữ ---------- */
+/* Theo ngôn ngữ chính của máy; game chưa có ngôn ngữ đó → tiếng Anh */
 function detectLang() {
-  const list = navigator.languages || [navigator.language || "en"];
-  for (const l of list) {
-    const c = String(l).toLowerCase().slice(0, 2);
-    if (STR[c]) return c;
-  }
-  return "en";
+  const c = String((navigator.languages && navigator.languages[0]) || navigator.language || "en").toLowerCase().slice(0, 2);
+  return STR[c] ? c : "en";
 }
 let LANG = (SAVE.lang && STR[SAVE.lang]) ? SAVE.lang : detectLang();
 

@@ -3,17 +3,13 @@
    DỮ LIỆU GAME — chỉnh sửa nội dung, cân bằng, chiến dịch phim tại đây
    ===================================================================== */
 
-/* ---------- Chiến dịch phim ----------
-   releaseDate: ngày công chiếu dùng cho bộ đếm ngược.
-   ⚠ Giá trị hiện tại là GIẢ ĐỊNH (dịp Diwali 2026) — cần xác nhận ngày
-   công chiếu chính thức tại thị trường phát hành trước khi ra mắt game. */
+/* ---------- Chiến dịch phim ---------- */
 const FILM = {
   title: "Ramayana",
   titles: { hi: "रामायण" },        // tên phim theo ngôn ngữ (tùy chọn)
-  releaseDate: "2026-11-08T00:00:00+07:00",
   tagline: "Sử thi vĩ đại nhất sắp lên màn ảnh rộng",
   hashtag: "#RamSetuChallenge",
-  shareUrl: "https://tranthanhhai1997.github.io/ram-setu/" // URL game đã phát hành (GitHub Pages)
+  shareUrl: "https://play.google.com/store/apps/details?id=io.github.tranthanhhai1997.ramsetu" // link tải app trên Google Play
 };
 
 /* ---------- Nhân vật & thẻ sưu tập ---------- */

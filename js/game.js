@@ -72,14 +72,15 @@ function genLevel(stage, rng, name, sub) {
   const nSlots = Math.min(5 + Math.floor(stage * 0.75) + Math.floor(r(0, 2)), 15);
   const need = stage < 3 ? 2 : stage < 8 ? 3 : (rng() < 0.5 ? 3 : 4);
   const total = nSlots * need;
+  const nDemons = Math.min(3, 1 + Math.floor(stage / 4));
   return {
     ch: -1, name, sub, slots: nSlots, need,
     stones: Math.ceil(total * 1.2), wind: Math.min(18 + stage * 12, 150),
     theme: Math.floor(rng() * THEMES.length),
     gull: stage >= 3 && rng() < 0.6, gust: stage >= 4 && rng() < 0.5,
     makara: stage >= 5 && rng() < 0.45, fire: stage >= 6 && rng() < 0.55 ? r(6.5, 10) : 0,
-    demons: stage >= 2 ? Array.from({ length: Math.min(3, 1 + Math.floor(stage / 4)) }, (_, k, a) =>
-      [Math.max(2, Math.round((k + 1) * nSlots / (a.length + 1))), Math.min(4, 1 + Math.floor(stage / 4))]) : [],
+    demons: stage >= 2 ? Array.from({ length: nDemons }, (_, k) =>
+      [Math.max(2, Math.round((k + 1) * nSlots / (nDemons + 1))), Math.min(4, 1 + Math.floor(stage / 4))]) : [],
     demonShield: stage >= 5, demonHeal: stage >= 8
   };
 }

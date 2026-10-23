@@ -112,7 +112,7 @@ const UI = (() => {
     el.hidden = false; sfx.whoosh();
     const k = [{ clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(85% at 50% 50%)" }];
     el.animate(k, { duration: 340, easing: "cubic-bezier(.6,0,.4,1)", fill: "forwards" }).onfinish = () => {
-      cb();
+      try { cb(); } catch (e) { console.error(e); } // lỗi trong cb không được làm kẹt lớp phủ
       setTimeout(() => {
         el.animate(k.slice().reverse(), { duration: 440, easing: "cubic-bezier(.6,0,.4,1)", fill: "forwards" }).onfinish = () => { el.hidden = true; };
       }, 380);
@@ -151,17 +151,9 @@ const UI = (() => {
     if (changed) refreshCoins();
   }
 
-  /* ---------- Đếm ngược phim ---------- */
+  /* ---------- Dòng giới thiệu phim (không đếm ngược) ---------- */
   function filmTitle() { return (FILM.titles && FILM.titles[LANG]) || FILM.title; }
-  function filmLine() {
-    const ts = Date.parse(FILM.releaseDate);
-    const v = { t: filmTitle() };
-    if (isNaN(ts)) return t("film_soon", v);
-    const d = Math.ceil((ts - Date.now()) / 86400000);
-    if (d > 0) return t("film_days", { t: v.t, d });
-    if (d > -60) return t("film_now", v);
-    return t("film_tag", v);
-  }
+  function filmLine() { return t("film_tag", { t: filmTitle() }); }
   function renderFilm() { const s = filmLine(); $("#filmText").innerHTML = s; $("#heroFilm").innerHTML = s; }
 
   /* ---------- Chia sẻ ---------- */
@@ -761,7 +753,6 @@ const UI = (() => {
     document.addEventListener("pointerdown", function once() { ac(); music.sync(); document.removeEventListener("pointerdown", once); });
 
     syncToggles(); renderFilm();
-    setInterval(renderFilm, 60000);
     startLevel(LEVELS[Math.min(SAVE.unlocked - 1, LEVELS.length - 1)]);
     showMenu("story");
     fitStage();
