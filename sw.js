@@ -1,9 +1,10 @@
 /* Service worker — cho phép cài đặt và chơi offline.
    Tăng VERSION mỗi lần phát hành để người chơi nhận bản mới. */
-const VERSION = "ramsetu-v12";
+const VERSION = "ramsetu-v16";
 const SHELL = [
-  "./", "index.html", "manifest.webmanifest", "css/style.css",
-  "js/data.js", "js/save.js", "js/i18n.js", "js/audio.js", "js/game.js", "js/ui.js",
+  "./", "index.html", "manifest.webmanifest", "css/style.css", "css/fonts.css",
+  "fonts/BeVietnamPro-400-latin-ext.woff2", "fonts/BeVietnamPro-400-latin.woff2", "fonts/BeVietnamPro-400-vietnamese.woff2", "fonts/BeVietnamPro-500-latin-ext.woff2", "fonts/BeVietnamPro-500-latin.woff2", "fonts/BeVietnamPro-500-vietnamese.woff2", "fonts/BeVietnamPro-600-latin-ext.woff2", "fonts/BeVietnamPro-600-latin.woff2", "fonts/BeVietnamPro-600-vietnamese.woff2", "fonts/BeVietnamPro-700-latin-ext.woff2", "fonts/BeVietnamPro-700-latin.woff2", "fonts/BeVietnamPro-700-vietnamese.woff2", "fonts/BeVietnamPro-800-latin-ext.woff2", "fonts/BeVietnamPro-800-latin.woff2", "fonts/BeVietnamPro-800-vietnamese.woff2", "fonts/NotoSansDevanagari-400-devanagari.woff2", "fonts/NotoSansDevanagari-400-latin-ext.woff2", "fonts/NotoSansDevanagari-400-latin.woff2", "fonts/PlayfairDisplay-700-latin-ext.woff2", "fonts/PlayfairDisplay-700-latin.woff2", "fonts/PlayfairDisplay-700-vietnamese.woff2",
+  "js/data.js", "js/save.js", "js/i18n.js", "js/platform.js", "js/audio.js", "js/game.js", "js/ui.js",
   "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png",
   "img/portraits/rama.webp", "img/portraits/hanuman.webp", "img/portraits/nala.webp", "img/portraits/squirrel.webp", "img/portraits/sugriva.webp", "img/portraits/samudra.webp", "img/portraits/jambavan.webp", "img/portraits/angada.webp", "img/portraits/lakshmana.webp", "img/portraits/vibhishana.webp", "img/portraits/kumbhakarna.webp", "img/portraits/ravana.webp", "img/portraits/sita.webp", "img/portraits/narrator.webp",
   "img/sprites/vanara.webp", "img/sprites/hanuman.webp", "img/sprites/nala.webp", "img/sprites/angada.webp", "img/sprites/sugriva.webp",
@@ -13,7 +14,8 @@ const SHELL = [
 const FONT_CACHE = "ramsetu-fonts";
 
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  // cache: "reload" — luôn lấy bản mới từ máy chủ, không dùng bộ nhớ đệm HTTP cũ của trình duyệt
+  e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL.map(u => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", (e) => {

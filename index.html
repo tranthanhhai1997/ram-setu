@@ -22,9 +22,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Ram Setu" />
     <title>Ram Setu</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/fonts.css" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -78,7 +76,7 @@
             <span class="small" data-i18n="hud_stones">Đá còn</span>
             <span><img class="ico" src="img/ui/icon-stone.webp" alt=""> <span id="hudStones">0</span></span>
           </div>
-          <button class="hudbox hudbtn" id="pauseBtn" type="button" data-i18n-title="pause_t">❚❚</button>
+          <button class="hudbox hudbtn" id="pauseBtn" type="button" data-i18n-title="pause_t"><span class="pause-ico" aria-hidden="true"><i></i><i></i></span></button>
         </div>
         <div class="power-bar" id="powerBar"></div>
         <div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
@@ -93,6 +91,7 @@
               <h1 class="logo" data-i18n="logo">Ram Setu</h1>
               <p class="hero-sub" data-i18n="hero_sub"></p>
               <div class="hero-film" id="heroFilm"></div>
+              <button class="btn big hero-play" id="heroPlay" type="button"></button>
             </div>
             <nav class="tabs" role="tablist">
               <button class="tab" data-tab="story" type="button" data-i18n="tab_story"></button>
@@ -221,6 +220,8 @@
               <button class="btn ghost" data-toggle="sound" type="button"></button>
               <button class="btn ghost" data-toggle="haptic" type="button"></button>
               <button class="btn teal install-btn" type="button" data-i18n="install" hidden></button>
+              <button class="btn ghost" id="privacyBtn" type="button" data-i18n="privacy"></button>
+              <button class="btn ghost" id="adPrivacyBtn" type="button" data-i18n="ad_privacy" hidden></button>
               <button class="btn ghost danger" id="resetBtn" type="button" data-i18n="reset"></button>
               <button class="btn" id="settingsCloseBtn" type="button" data-i18n="done"></button>
             </div>
@@ -251,6 +252,7 @@
     <script src="js/data.js"></script>
     <script src="js/save.js"></script>
     <script src="js/i18n.js"></script>
+    <script src="js/platform.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/game.js"></script>
     <script src="js/ui.js"></script>

@@ -25,22 +25,33 @@ const UI = (() => {
   /* Khung game phủ kín màn hình; cầm dọc thì xoay 90° để luôn hiển thị ngang */
   function fitStage() {
     const st = $("#stage"), cv = canvas;
-    if (!document.body.classList.contains("immersive")) {
+    const imm = document.body.classList.contains("immersive");
+    if (!imm && !IS_APP) {
       document.body.classList.remove("rot");
-      st.style.width = st.style.height = st.style.transform = cv.style.width = cv.style.height = "";
+      st.style.width = st.style.height = st.style.transform = st.style.top = cv.style.width = cv.style.height = "";
+      cv.style.position = cv.style.left = cv.style.top = "";
       return;
     }
-    const vw = window.innerWidth, vh = window.innerHeight, rot = vh > vw;
+    // app: ở menu chừa chỗ cho thanh công cụ; app đã khóa ngang nên không cần xoay giả
+    const tb = IS_APP && !imm ? $(".toolbar").offsetHeight : 0;
+    st.style.top = tb + "px";
+    const vw = window.innerWidth, vh = window.innerHeight - tb, rot = !IS_APP && vh > vw;
     document.body.classList.toggle("rot", rot);
     const W = rot ? vh : vw, H = rot ? vw : vh;
     st.style.width = W + "px"; st.style.height = H + "px";
     st.style.transform = rot ? "translateX(" + vw + "px) rotate(90deg)" : "";
-    const k = Math.min(W / LW, H / LH);
-    cv.style.width = (LW * k) + "px"; cv.style.height = (LH * k) + "px";
+    // màn hình dài (điện thoại ngang): phóng to khung, cắt bớt tối đa 18% chiều cao (trời trên, nước dưới)
+    // để giảm dải trống hai bên; điểm chạm vẫn đúng vì toGame tính theo kích thước thật của canvas
+    const k = Math.min(W / LW, H / (LH * 0.82));
+    const cw = LW * k, ch = LH * k, over = Math.max(0, ch - H);
+    cv.style.width = cw + "px"; cv.style.height = ch + "px";
+    cv.style.position = "absolute";
+    cv.style.left = ((W - cw) / 2) + "px";
+    cv.style.top = (over > 0 ? -over * 0.35 : (H - ch) / 2) + "px";
   }
   /* Xin toàn màn hình + khóa ngang (Android/Chrome); phải gọi trong thao tác chạm của người chơi */
   function enterFullscreen() {
-    if (!mobileMQ.matches || document.fullscreenElement || !document.documentElement.requestFullscreen) return;
+    if (IS_APP || !mobileMQ.matches || document.fullscreenElement || !document.documentElement.requestFullscreen) return;
     document.documentElement.requestFullscreen({ navigationUI: "hide" })
       .then(() => screen.orientation && screen.orientation.lock && screen.orientation.lock("landscape").catch(() => {}))
       .catch(() => {});
@@ -158,6 +169,7 @@ const UI = (() => {
     const url = FILM.shareUrl || location.href;
     const full = text + " " + FILM.hashtag;
     try {
+      if (await Native.share({ title: t("share_title"), text: full, url })) return;
       if (navigator.share) { await navigator.share({ title: t("share_title"), text: full, url }); return; }
       await navigator.clipboard.writeText(full + " " + url);
       toast("📋", t("share_copied"), t("share_copied_sub"));
@@ -176,7 +188,12 @@ const UI = (() => {
     show("#menuOverlay");
     $("#dailyDot").hidden = SAVE.daily.lastClaim === todayStr();
   }
+  function heroPlayLabel() {
+    const next = Math.min(SAVE.unlocked - 1, LEVELS.length - 1);
+    return "▶ " + (SAVE.unlocked === 1 && !SAVE.stars[0] ? t("begin_journey") : t("continue_lv", { n: next + 1 }));
+  }
   function renderTab() {
+    $("#heroPlay").textContent = heroPlayLabel();
     document.querySelectorAll(".tab").forEach(b => b.classList.toggle("on", b.dataset.tab === curTab));
     const box = $("#tabBody");
     box.innerHTML = ({ story: tabStory, modes: tabModes, shop: tabShop, cards: tabCards, ach: tabAch })[curTab]();
@@ -357,7 +374,7 @@ const UI = (() => {
   }
 
   /* ---------- Bắt đầu các chế độ ---------- */
-  function beginPlay() { state = "aim"; setInGame(true); updateHUD(); }
+  function beginPlay() { state = "aim"; setInGame(true); updateHUD(); sfx.conch(); }
   function playStoryLevel(i, skipStory) {
     hideAll(); mode = "story"; levelIdx = i;
     startLevel(LEVELS[i]);
@@ -511,9 +528,11 @@ const UI = (() => {
     syncToggles(); show("#pauseOverlay");
   }
 
-  /* ---------- Quảng cáo (mô phỏng) ---------- */
+  /* ---------- Quảng cáo: AdMob thật trong app, mô phỏng khi chưa có ---------- */
   let adTimer = null, adDone = null, adPrev = null;
   function openAd(kind, seconds, onDone) {
+    if (Ads.ready(kind)) { openRealAd(kind, onDone); return; }
+    if (IS_APP && kind === "interstitial") { onDone(); return; } // app: không tải được thì bỏ qua, không bắt chờ
     adDone = onDone; adPrev = state;
     hideAll(); show("#adOverlay");
     state = "ad";
@@ -532,6 +551,16 @@ const UI = (() => {
     };
     renderAd();
     adTimer = setInterval(() => { remain -= 0.1; renderAd(); }, 100);
+  }
+  function openRealAd(kind, onDone) {
+    const prev = state;
+    state = "ad";
+    if (audioCtx) audioCtx.suspend();
+    Ads.show(kind).then((ok) => {
+      if (audioCtx) { audioCtx.resume(); music.sync(); }
+      if (kind === "interstitial" || ok) { state = prev === "fail" ? "aim" : prev; onDone(); return; }
+      state = prev; // đóng rewarded sớm: không thưởng, giữ nguyên màn hình cũ
+    });
   }
 
   /* ---------- Quà đăng nhập ---------- */
@@ -601,6 +630,7 @@ const UI = (() => {
   let installEvt = null;
   function isStandalone() { return window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true; }
   function setupPWA() {
+    if (IS_APP) { document.querySelectorAll(".install-btn").forEach(b => { b.hidden = true; }); $("#iosHint").hidden = true; return; }
     if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
       navigator.serviceWorker.register("sw.js").then(reg => {
         if (!navigator.serviceWorker.controller) {
@@ -657,6 +687,7 @@ const UI = (() => {
     buildPowerBar();
     setupPWA();
     document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => { sfx.click(); curTab = b.dataset.tab; renderTab(); }));
+    $("#heroPlay").addEventListener("click", () => { sfx.click(); goLevel(Math.min(SAVE.unlocked - 1, LEVELS.length - 1)); });
     $("#storyNext").addEventListener("click", storyAdvance);
     $("#storySkip").addEventListener("click", () => { sfx.click(); storyEnd(); });
     $("#storyOverlay").addEventListener("click", (e) => { if (e.target.id === "storyOverlay") storyAdvance(); });
@@ -690,6 +721,10 @@ const UI = (() => {
     $("#dailyCloseBtn").addEventListener("click", () => { sfx.click(); $("#dailyOverlay").hidden = true; });
     $("#settingsBtn").addEventListener("click", () => { sfx.click(); syncToggles(); show("#settingsOverlay"); });
     $("#settingsCloseBtn").addEventListener("click", () => { sfx.click(); $("#settingsOverlay").hidden = true; });
+    // app: đổi trang trong WebView sang tên miền ngoài → Capacitor mở bằng trình duyệt hệ thống
+    $("#privacyBtn").addEventListener("click", () => { sfx.click(); if (IS_APP) location.href = PRIVACY_URL; else window.open(PRIVACY_URL, "_blank", "noopener"); });
+    $("#adPrivacyBtn").addEventListener("click", () => { sfx.click(); Ads.showPrivacyOptions(); });
+    ADS_READY.then(() => { $("#adPrivacyBtn").hidden = !Ads.privacyRequired(); });
     $("#resetBtn").addEventListener("click", () => {
       if (!confirm(t("reset_confirm"))) return;
       const keepLang = SAVE.lang;
@@ -702,6 +737,20 @@ const UI = (() => {
     document.querySelectorAll("[data-toggle]").forEach(b => b.addEventListener("click", () => toggle(b.dataset.toggle)));
     $("#filmShareBtn").addEventListener("click", shareProgress);
     window.addEventListener("resize", fitStage);
+    // rời app / chuyển tab: tạm dừng game và âm thanh
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) { if (playing()) togglePause(); if (audioCtx) audioCtx.suspend(); }
+      else if (audioCtx) { audioCtx.resume(); music.sync(); }
+    });
+    // nút Back Android: đóng lớp phủ → tạm dừng → về menu → thoát app
+    Native.on("App", "backButton", () => {
+      for (const sel of ["#helpOverlay", "#cardOverlay", "#settingsOverlay", "#dailyOverlay"]) { if (!$(sel).hidden) { $(sel).hidden = true; return; } }
+      if (state === "ad") return;
+      if (state === "story") { storyEnd(); return; }
+      if (playing() || state === "pause") { togglePause(); return; }
+      if (state === "win" || state === "fail") { showMenu(); return; }
+      Native.exitApp();
+    });
     window.addEventListener("orientationchange", () => setTimeout(fitStage, 200));
     window.addEventListener("keydown", (e) => {
       if (e.target && e.target.tagName === "SELECT") return;
@@ -715,6 +764,7 @@ const UI = (() => {
     setInterval(renderFilm, 60000);
     startLevel(LEVELS[Math.min(SAVE.unlocked - 1, LEVELS.length - 1)]);
     showMenu("story");
+    fitStage();
     if (SAVE.daily.lastClaim !== todayStr()) setTimeout(openDaily, 500);
     checkAchievements();
     requestAnimationFrame(loop);

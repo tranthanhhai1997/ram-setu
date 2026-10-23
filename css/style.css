@@ -482,3 +482,93 @@ body.immersive .story-box{ max-width:640px; }
 /* Khi xoay ngang giả: thông báo & chữ chuyển cảnh xoay theo */
 body.rot .toasts{ top:50%; left:calc(100% - 46px); width:min(80vh, 380px); transform:translate(-50%, -50%) rotate(90deg); }
 body.rot .wipe span{ transform:rotate(90deg); white-space:nowrap; }
+
+/* =================== App native (Capacitor) =================== */
+body.app{ overflow:hidden; overscroll-behavior:none; }
+body.app .wrap{ padding:0; }
+body.app .film-strip, body.app .banner-slot, body.app .cols, body.app footer, body.app .install-btn{ display:none !important; }
+body.app .toolbar{
+  position:fixed; top:0; left:0; right:0; z-index:60; margin:0; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none;
+  padding:6px max(12px, env(safe-area-inset-right)) 6px max(12px, env(safe-area-inset-left));
+  background:linear-gradient(180deg, var(--bg), rgba(20,10,34,.94));
+}
+body.app.immersive .toolbar{ display:none; }
+body.app .stage{
+  position:fixed; left:0; z-index:50; transform-origin:0 0; border-radius:0; box-shadow:none;
+  display:grid; place-items:center; background:#0b0614;
+}
+body.app canvas#game{ aspect-ratio:auto; border-radius:0; }
+body.app .overlay{ position:absolute; z-index:5; padding:8px; overflow-y:auto; }
+body.app .overlay.top{ z-index:8; }
+
+/* Màn hình ngang thấp (app / điện thoại xoay ngang): menu gọn để thấy được nội dung */
+@media (max-height: 520px){
+  .hero-emblem{ width:44px; margin-bottom:0; }
+  .hero-kicker{ display:none; }
+  .logo{ font-size:34px; margin:0 0 4px; }
+  .hero-sub{ display:none; }
+  .hero-film{ font-size:12px; padding:3px 10px; }
+  .tabs{ margin-top:6px; }
+  .tab{ padding:7px 11px; font-size:13px; }
+  .card.wide{ padding:10px 14px; }
+  .story-head .btn.big{ font-size:16px; padding:10px 26px; }
+  .card:not(.wide){ padding:10px 14px 8px; }
+  .card h3{ font-size:22px; margin-bottom:2px; }
+  .stars{ font-size:30px; margin:0 0 2px; }
+  .card p{ font-size:13px; margin-bottom:6px; }
+  .btn{ padding:9px 18px; font-size:14px; }
+  .btn-row{ margin-top:4px; gap:8px; }
+}
+
+/* =================== Điện thoại cầm ngang / app (màn hình thấp) =================== */
+.hero-play{ display:none; }
+body.app .stage, body.immersive .stage{
+  overflow:hidden;
+  background:linear-gradient(rgba(11,6,20,.78), rgba(11,6,20,.78)), url("../img/ui/keyart.webp") center / cover no-repeat, #0b0614;
+}
+/* thanh công cụ gọn trong app */
+body.app .toolbar{ gap:6px; padding-top:4px; padding-bottom:4px; }
+body.app .brand{ font-size:18px; gap:8px; }
+body.app .brand .flag{ width:28px; height:28px; font-size:16px; }
+body.app #nextChip{ display:none; }
+body.app .chip{ padding:5px 10px; font-size:13px; }
+body.app .tbtn{ padding:6px 11px; font-size:13px; }
+body.app .tbtn.icon, body.app .lang-sel.short{ width:34px; height:34px; }
+body.app .lang-sel.short{ width:auto; }
+
+@media (max-height: 520px) and (orientation: landscape){
+  /* menu 2 cột: trái = huy hiệu, logo, nút Chơi; phải = tab + nội dung cao hết màn */
+  .overlay.menu{ padding:8px; align-items:stretch; }
+  .overlay.menu .card.wide{
+    display:grid; grid-template-columns:minmax(190px, 28%) 1fr; grid-template-rows:auto 1fr;
+    column-gap:14px; max-width:none; width:100%; height:100%; max-height:100%; padding:10px 12px;
+  }
+  .overlay.menu .hero{ grid-row:1 / span 2; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; margin:0; }
+  .overlay.menu .hero-emblem{ width:64px; }
+  .overlay.menu .logo{ font-size:36px; margin:0; }
+  .overlay.menu .hero-film{ font-size:11.5px; line-height:1.35; }
+  .overlay.menu .hero-play{ display:inline-flex; font-size:15px; padding:11px 18px; margin-top:4px; animation:ctaGlow 2.2s ease-in-out infinite; }
+  .overlay.menu .tabs{ grid-column:2; margin:0; }
+  .overlay.menu .tab-body{ grid-column:2; min-height:0; padding-top:8px; }
+  .overlay.menu .story-head .btn.big{ display:none; }
+  .overlay.menu .story-head .diff-row{ margin-top:2px; }
+  .chapter{ margin-top:8px; padding:6px 8px 8px; }
+  .node-wrap{ padding-top:34px; }
+  .node-wrap:not(:last-child)::after{ top:57px; }
+  .node{ width:46px; height:46px; font-size:16px; }
+  .node-hero{ height:36px; }
+
+  /* tạm dừng / cài đặt: nút xếp 2 cột */
+  #pauseOverlay .btn-row.col, #settingsOverlay .btn-row.col{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  #pauseResumeBtn, #settingsOverlay .lang-row, #settingsCloseBtn{ grid-column:1 / -1; }
+  #pauseOverlay .card, #settingsOverlay .card{ max-width:520px; }
+
+  /* thông báo nhỏ ở góc phải trên, không che bảng */
+  body:not(.rot) .toasts{ top:8px; left:auto; right:12px; transform:none; width:min(300px, 38vw); gap:6px; }
+  .toast{ padding:6px 10px; gap:8px; }
+  .toast .ti{ font-size:20px; }
+  .toast b{ font-size:12.5px; } .toast small{ font-size:11px; }
+}
+/* biểu tượng tạm dừng vẽ bằng CSS (không phụ thuộc font hệ thống) */
+.pause-ico{ display:inline-flex; gap:4px; align-items:center; justify-content:center; }
+.pause-ico i{ display:block; width:4px; height:14px; border-radius:1.5px; background:currentColor; }

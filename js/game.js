@@ -940,6 +940,7 @@ function launch(vx, vy, hx, hy) {
 }
 function addCombo() {
   combo++; bestCombo = Math.max(bestCombo, combo);
+  if (combo >= 2) sfx.combo(combo);
   if (combo > SAVE.stats.maxCombo) SAVE.stats.maxCombo = combo;
 }
 function landStone(i) {
@@ -983,7 +984,7 @@ function landStone(i) {
 function sinkStone() {
   if (!flying) return;
   splash(flying.x, WATER_Y + 2, 12);
-  sfx.splash(true);
+  sfx.sink();
   floater(flying.x, WATER_Y - 46, combo >= 2 ? t("f_sink_combo", { n: combo }) : t("f_sink"), "#a9d8f2");
   combo = 0; shake(2);
   flying = null;
@@ -1031,7 +1032,7 @@ function spawnDemon() {
   explode(demon.x, demon.y - 30 * sc); sparkle(demon.x, demon.y - 30 * sc, 24, "#c79bff");
   floater(LW / 2, 150, t("f_demon_appear"), "#d8b4ff");
   if (!SAVE.stats.demons) floater(LW / 2, 178, t("f_demon_tip"), "#ffe6a8");
-  sfx.growl(); shake(4); buzz([30, 40, 30]);
+  sfx.demonAppear(); shake(4); buzz([30, 40, 30]);
 }
 function updateDemon(dt) {
   if (!demon && demonQueue.length && contiguous() >= demonQueue[0].at && state !== "win") spawnDemon();
@@ -1062,13 +1063,13 @@ function hitDemon(f) {
   if (d.shield) {                 // trúng khiên: đá bật ra
     f.vx = -Math.abs(f.vx) * 0.35; f.vy = -140; f.vr = rand(8, 12);
     sparkle(f.x, f.y, 14, "#ffd166"); floater(d.x, d.y - 80 * d.sc, t("f_shield"), "#ffd166");
-    sfx.fireBlock(); shake(2); buzz(20);
+    sfx.shield(); shake(2); buzz(20);
     return;
   }
   const dmg = f.units;
   d.hp -= dmg; d.hitT = 0.28; d.healT = 8; d.x -= 6 * Math.sign(f.vx || 1) * -1;
   splash(f.x, f.y, 10, "#e0c0ff"); floater(d.x, d.y - 82 * d.sc, "-" + dmg, "#ff9a7a");
-  sfx.growl(); sfx.thud(); shake(3.5); buzz(35);
+  sfx.demonHit(); shake(3.5); buzz(35);
   addCombo();
   flying = null;
   if (d.hp <= 0) {
@@ -1077,7 +1078,7 @@ function hitDemon(f) {
     addCoins(coins); UI.flyCoins(d.x, d.y - 40 * d.sc, Math.min(10, 3 + d.maxHp), true);
     floater(d.x, d.y - 90 * d.sc, t("f_demon_down") + " +" + coins, "#ffe6a8");
     SAVE.stats.demons = (SAVE.stats.demons || 0) + 1;
-    sfx.complete(); shake(6); buzz([40, 60, 80]); hopT = 0.45;
+    sfx.demonDown(); shake(6); buzz([40, 60, 80]); hopT = 0.45;
     demon = null;
   }
   updateHUD(); afterThrow();
@@ -1287,6 +1288,7 @@ function step(dt) {
             gustFlashT = 0.7;
             $("#windBox").classList.add("gust");
             floater(f.x, f.y - 34, dw > 0 ? t("f_gust_r") : t("f_gust_l"), "#ffb3a0");
+            sfx.wind();
           }
         }
       }
@@ -1298,7 +1300,7 @@ function step(dt) {
       f.vx = -f.vx * 0.15; f.vy = 150; f.vr = rand(6, 10);
       sparkle(f.x, f.y, 10, "#ffffff");
       floater(f.x, f.y - 30, t("f_gull"), "#ffffff");
-      sfx.splash(false); shake(3); buzz(30);
+      sfx.gull(); shake(3); buzz(30);
     }
     if (demon && !f.demonDone && demon.appearT <= 0) {
       const d = demon, sc = d.boss ? 1.55 : 1, cy = d.y - 32 * sc;
@@ -1350,6 +1352,7 @@ canvas.addEventListener("pointerdown", (e) => {
   if (state !== "aim" || flying || failTimer > 0) return;
   canvas.setPointerCapture(e.pointerId);
   drag = toGame(e); dragStart = { x: drag.x, y: drag.y };
+  sfx.pull();
 });
 canvas.addEventListener("pointermove", (e) => { if (drag && state === "aim" && !spaceCharge) drag = toGame(e); });
 function endDrag() {
@@ -1370,6 +1373,7 @@ window.addEventListener("keydown", (e) => {
       ac();
       const mn = Math.min(minPowerToFrontier(0.907), 900);
       spaceCharge = { t0: performance.now(), power: mn, min: mn };
+      sfx.pull();
     }
   }
   if (e.code === "KeyR" && playing()) UI.restartLevel();
