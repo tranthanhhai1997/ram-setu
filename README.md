@@ -11,6 +11,10 @@ Game trình duyệt ném đá xây cầu theo sử thi Ramayana — chạy trên
 - **Biển vô tận**, **Thử thách ngày**, 13 thẻ nhân vật, 16 thành tựu, cửa hàng trang phục
 - **Điều khiển:** kéo về sau như ná cao su rồi thả · bàn phím: giữ `Space` nạp lực, `1`–`4` vật phẩm, `P` tạm dừng
 
+## Tiếp tục phát triển / app Android
+
+Xem **[docs/HANDOFF.md](docs/HANDOFF.md)**: build app Android (Capacitor), khóa ký, AdMob, trạng thái Google Play, việc còn dở.
+
 ## Chạy trên máy
 
 Không cần build — chạy bằng server tĩnh bất kỳ:
@@ -35,16 +39,15 @@ Mở `http://localhost:8765/`. File gốc được giữ nguyên: `Game Xây C�
 | `js/game.js` | Engine: vật lý, chướng ngại, vẽ canvas, điều khiển |
 | `js/ui.js` | Luồng màn hình, menu, cửa hàng, quà ngày, chia sẻ |
 
-## Cần làm trước khi phát hành
+## Lưu ý khi phát hành
 
-- `FILM.releaseDate` trong `js/data.js` đang là **giá trị giả định** — cập nhật theo ngày công chiếu chính thức tại thị trường mục tiêu.
 - `FILM.shareUrl`: link tải app trên Google Play (`https://play.google.com/store/apps/details?id=io.github.tranthanhhai1997.ramsetu`).
-- Quảng cáo đang là **mô phỏng**: banner (`.banner-slot`), interstitial (sau mỗi 2 màn thắng, `winNext` trong `ui.js`), rewarded (`openAd("rewarded", …)`). Thay bằng SDK thật tại các vị trí này.
+- Quảng cáo: bản web dùng màn **mô phỏng**; app Android dùng **AdMob** thật (interstitial + rewarded) — xem `docs/HANDOFF.md`.
 - Không dùng logo, hình ảnh, tên diễn viên hay nhạc phim khi chưa có thỏa thuận bản quyền với hãng phim.
 
 ## Đa ngôn ngữ
 
-- Ngôn ngữ tự nhận theo trình duyệt (vi / hi, còn lại → en); người chơi đổi ở thanh trên hoặc Cài đặt.
+- Ngôn ngữ theo ngôn ngữ chính của máy (vi / hi, còn lại → en); người chơi đổi ở thanh trên hoặc Cài đặt.
 - Thêm/sửa chuỗi: `STR.<lang>` trong `js/i18n.js`. Thiếu khóa sẽ tự lấy tiếng Việt.
 - Thêm ngôn ngữ mới (vd. `ta` Tamil): thêm vào `LANGS`, `STR.ta`, `CONTENT.ta`.
 - Bản tiếng Anh/Hindi do AI dịch — **cần người bản ngữ duyệt** trước khi phát hành.
